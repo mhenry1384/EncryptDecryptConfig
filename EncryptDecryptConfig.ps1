@@ -23,6 +23,11 @@ if (!(Test-Path $filepath))
 	echo "File $filepath does not exist"
 	exit -1
 }
+if (!(Test-Path $filepath -pathType leaf))
+{
+	echo "$filepath is not a file"
+	exit -1
+}
 $filepath = Resolve-Path -Path $filepath
 
 function Save($section, $configuration)
