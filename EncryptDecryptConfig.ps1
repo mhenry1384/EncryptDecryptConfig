@@ -71,7 +71,7 @@ function BackupFile($filepath)
 function GetRootNodeOfPartialConfigFile($filepath)
 {
 	$text = (Get-Content $filepath -Raw)
-	$text -match "(?si)(<\?[^?]*\?>`r?`n?)?<(.+?)(\s|>)" | Out-Null
+	$text -match "(?si)(<\?[^?]*\?>`r?`n?)?\s*<(.+?)(\s|>)" | Out-Null
 	return $matches[2]
 }
 
@@ -105,7 +105,7 @@ function EncryptDecryptSectionOfFile($filepath)
 	}
 	$section = $configuration.GetSection($configSectionThisFile)
 
-	if ($encrypt) 
+	if ($encrypt)
 	{
 		if ($section.SectionInformation.IsProtected)
 		{
@@ -135,10 +135,10 @@ function EncryptDecryptSectionOfFile($filepath)
 	}
 	else
 	{
-		if ($section.SectionInformation.IsProtected) 
+		if ($section.SectionInformation.IsProtected)
 		{
 			"Section $configSectionThisFile is encrypted in $filepath. Run this script with -decrypt to decrypt it."
-		} 
+		}
 		else {
 			"Section $configSectionThisFile is decrypted in $filepath. Run this script with -encrypt to decrypt it."
 		}
@@ -151,7 +151,7 @@ function EncryptDecryptSectionOfFile($filepath)
 	}
 }
 
-if ($encrypt -and $decrypt) 
+if ($encrypt -and $decrypt)
 {
 	echo "Cannot specify both encrypt and decrypt"
 	exit -1
@@ -164,7 +164,7 @@ if (!(Test-Path $filepath))
 }
 if (Test-Path $filepath -pathType leaf)
 {
-	EncryptDecryptSectionOfFile Resolve-Path -Path $filepath
+	EncryptDecryptSectionOfFile (Resolve-Path -Path $filepath)
 }
 else
 {
